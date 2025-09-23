@@ -1,16 +1,20 @@
+# 简介
+
 一些有趣的Agent[链接](https://mp.weixin.qq.com/mp/appmsgalbum?__biz=MzIyMzA5NjEyMA==\&action=getalbum\&album_id=3885925693137584129\&subscene=90\&scenenote=https%3A%2F%2Fmp.weixin.qq.com%2Fs%3F__biz%3DMzIyMzA5NjEyMA%3D%3D%26mid%3D2647672885%26idx%3D1%26sn%3D33e0e31ddf8266d135ba91807b262e7e%26chksm%3Df1e76709e82f1114517b1d7fb1567dfb1a450f1484c0c2359f28a6d89ad633fca94666d5de16%26scene%3D90%26xtrack%3D1%26subscene%3D236%26clicktime%3D1751850337%26enterid%3D1751850337%26sessionid%3D1751850228118%26key%3Ddaf9bdc5abc4e8d0194125ba376734e49fccedaa95b8c5be03d92e84f3fec6ec996078c18c040cfe5a818ec496e220a8b651f0e3888ca2dcc3c8f464f04a47f024e9894fbef7bfe929f167cc65dc952882be085e3cb9076d17321c77d28dc54253db2bd3f3e57c2d1221d1189d7922b87ab4b2ef1edd345a2b8363d12c6b76a0%26ascene%3D1%26uin%3DMjEwNTkwMTM4Mw%253D%253D%26devicetype%3DUnifiedPCMac%26version%3Df2640611%26lang%3Dzh_CN%26countrycode%3DCN%26exportkey%3Dn_ChQIAhIQy%252FgSo%252FJYwRuJj3ysu1SXUBLkAQIE97dBBAEAAAAAAM%252FgJtWAJcsAAAAOpnltbLcz9gKNyK89dVj00y0Jl6Lucl%252FH4vwE4fgKM7CPT%252FC2CoADLqgBdVQ838C8YOPUhfOXll7T8BztSx2Pul82s7PNU5h7BoKvvsjt99z7kUgjCIwBnUg96U804JYJikyY6GVtaFtXdz2Dl8tfpGDHiUqucbFeMQQU%252FwXGVfqpWhW%252B0mKgL%252B1LL%252BFKrhE5DDRcZ1%252B9i1bTuEmUtitT1pujF3PLcB%252F5lbgsZPTr80XkpBvGwSGDv2ezvfTN5ujIzaoHGCfkaUmnPyvwKg%253D%253D%26acctmode%3D0%26pass_ticket%3DbKApy8PAwuCue1cgtyGokAhZH4NyFttuUrjmmzFM%252BS0B%252FGTJMynGTYEoO%252FuxhcGK%26wx_header%3D0%26fasttmpl_type%3D0%26fasttmpl_fullversion%3D7805415-zh_CN-html%26from_xworker%3D1\&nolastread=1\&sessionid=#wechat_redirect)
 
-**Agent、MCP、Function Calling和Tool use到底是什么关系？**
+## **Agent、MCP、Function Calling和Tool use到底是什么关系？**
 
-可以这么理解，Agent是完成业务功能的统称，LLM是核心大脑，而MCP、Function Calling和Tool use都是扩展LLM能力的，
+可以这么理解，Agent是自主规划并完成业务功能的系统，LLM是核心大脑，而MCP、Function Calling和Tool use都是扩展LLM能力的，
 
 现在的Agent开发核心依赖LLM，业务功能通过开发各种工具实现，而工具与LLM之间的接入标准/协议目前最热门的就是MCP。Function Calling用的也非常多，只不过MCP的标准更通用且功能更强大。
 
 写在2025年9月5日的今天，Qwen和Deepseek都发文，预告即将发布最新的Agent大模型，包括前几天美团首次发布LongCat Agent能力增强的大模型，前段时间的AutoGLM2.0（为手机而生的通用Agent），这些都是在Agent领域数据集上专门训练过的LLM。领域数据不懂可以看[这里](https://mp.weixin.qq.com/s/CdjSv1CGetZqn79TrL7lHA)
 
+Function Calling是在本地为LLM提供工具功能，实现Agent业务，而MCP也可以提供工具，但由于其CS架构，它可以被更多人复用，减少重复造轮子。
 
 
-**完整的Agent架构通常包括**：
+
+## **完整的Agent架构通常包括**：
 
 * **规划层**：任务分解和执行计划
 
@@ -22,7 +26,37 @@
 
 * **反思层**：结果评估和自我改进
 
+https://www.anthropic.com/engineering/building-effective-agents
 
+如果工具太多，比如数十个以上，都放在一个LLM中，效果会打折扣，但如果设置一个路由，每次先让路由来决定该使用哪一组路由，再去让LLM判断具体使用哪个工具，效果会好很多。
+
+![image-20250920170656870](images/image-20250920170656870.png)
+
+
+
+## Agent和工作流的区别
+
+工作流是预先编排好的流程，而Agent是动态的，根据任务动态生成。
+
+**Anthropic 眼中，代理的本质极其简单：模型在一个循环里使用工具。**
+
+
+
+注意，大量市面上所说的”智能体“只能称为工作流，因为它不需要LLM来自主规划，都是一些工具的流程，实质上只是一个自动化的软件。但Agent不同，Agent是思考加自主规划，然后不断迭代。
+
+工作流是预先定义的代码路径来协调大模型和工具的系统。
+
+![image-20250920165128554](images/image-20250920165128554.png)
+
+注意，Agent是增加了系统的复杂度，如无必要，无需增加。一般来讲工作流即可完成的，不要用智能体（绝大部分99%场景都不需要智能体），因为现在的场景中大多数都是有相对稳定和成熟的工作流程的，直接用自动化来实现即可。
+
+**真正需要智能体的模式：（增加人类反馈，让人类来判断工具的执行结果进而指导或改变大模型的规划）**
+
+![image-20250920165640409](images/image-20250920165640409.png)
+
+
+
+**何时使用代理：** 代理可用于**解决开放式问题，这类问题难以甚至无法预测所需的步数，并且无法硬编码固定路径。LLM 可能会运行多轮，您必须对其决策有一定程度的信任。代理的自主性使其成为在可信环境中扩展任务的理想选择。**
 
 # Agent入门
 
@@ -118,20 +152,38 @@ AI agent（智能体）的意思是说，人类不提供明确的行为或步骤
 
       ![](images/image-1.png)
 
-      * MemGPT,2023年
+    * MemGPT,2023年
 
-      * Agent Workflow Memory，2024年
+    * Agent Workflow Memory，2024年
 
-      * Agent Memory Agent，2025年
+    * Agent Memory Agent，2025年
 
 * 如何使用工具
 
 * AI Agent如何执行计划
 
-  *
 
 
+## Agent容易出问题的点
 
+一篇好文，why im betting against ai agents in 2025
+
+agent容易出问题的点：
+1、错误复合效应
+每一步大模型正确率在95，复杂任务如果处理20步，最终正确率也只有36，也即三分之二的失败率
+这个问题是把提示词写的再好也无法解决的，因为大模型一定有误差，而且执行步数是必须的
+
+解决：大问题拆解成小问题，大模型的每个解法会让用户来确认执行。
+
+2、成本高
+当多轮对话后，前面token要带上，这增加了成本（作者这里没有考虑缓存，差评）
+
+解决：尽量设计无状态对话，尽量少的使用上下文
+
+3、智能体成功的关键在于工具tool而非大模型
+比如Claude code的大模型claude换成ds，效果依然很好，因为工具非常多，完善
+
+设计好的AI便于理解的工具，构建清晰的反馈机制，方案的回滚机制等很重要
 
 
 
@@ -160,27 +212,4 @@ openmanus
 
 https://zhuanlan.zhihu.com/p/30090038284
 
-
-
-# MCP
-
-## 工作流程详解
-
-MCP采用的是C/S架构，工具会集成客户端然后与远程的或本地的服务端建立连接，然后用户会话过程中会让大模型识别什么工具是需要执行的，然后等服务端执行完后再让大模型理解并返回给用户。
-
-![](images/image-5.png)
-
-系列教程：https://www.bilibili.com/video/BV1cTTezwEom
-
-
-
-
-
-# 插件
-
-问与学：https://claude.ai/chat/fd21e402-2fc8-49fa-81c1-42f6528e913e
-
-其实本质上就是大模型的Function Calling调用，也即定义好API（符合RESTful规范即可），和出入参数，将API的这些信息放入大模型的系统提示词，并约束大模型什么时候需要调用API和拒绝调用。
-
-在问答的时候，LLM会对适当的问题调用API并构造入参，得到结果后再返回给LLM。
 
