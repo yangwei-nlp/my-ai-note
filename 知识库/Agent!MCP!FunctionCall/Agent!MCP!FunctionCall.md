@@ -102,6 +102,14 @@ Manus的底模用的是Claude3.7，规划能力无法改变，但第二个工具
 
 
 
+# Agent常见策略
+
+https://claude.ai/chat/dd526217-968f-45ab-a133-d462adcc207b
+
+
+
+
+
 # Agent详解
 
 李宏毅课程链接
@@ -206,10 +214,20 @@ agent容易出问题的点：
 
 
 
+## Agent框架
+
+https://openai.github.io/openai-agents-python/
+
+
+
+openai的agent builder：https://platform.openai.com/agent-builder/edit
+
+
+
+
 # Agent项目分析
 
 openmanus
 
 https://zhuanlan.zhihu.com/p/30090038284
-
 
