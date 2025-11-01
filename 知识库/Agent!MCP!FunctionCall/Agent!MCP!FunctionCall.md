@@ -28,6 +28,8 @@ Function Calling是在本地为LLM提供工具功能，实现Agent业务，而MC
 
 https://www.anthropic.com/engineering/building-effective-agents
 
+**路由**
+
 如果工具太多，比如数十个以上，都放在一个LLM中，效果会打折扣，但如果设置一个路由，每次先让路由来决定该使用哪一组路由，再去让LLM判断具体使用哪个工具，效果会好很多。
 
 ![image-20250920170656870](images/image-20250920170656870.png)
@@ -38,7 +40,7 @@ https://www.anthropic.com/engineering/building-effective-agents
 
 工作流是预先编排好的流程，而Agent是动态的，根据任务动态生成。
 
-**Anthropic 眼中，代理的本质极其简单：模型在一个循环里使用工具。**
+**Anthropic 眼中，代理/Agent的本质极其简单：模型在一个循环里使用工具。**
 
 
 
@@ -106,8 +108,25 @@ Manus的底模用的是Claude3.7，规划能力无法改变，但第二个工具
 
 https://claude.ai/chat/dd526217-968f-45ab-a133-d462adcc207b
 
+**CoT**
 
+很简单，就是让大模型一步步思考和推理，将任务拆解。
 
+**ReAct**
+
+先对复杂任务进行推理规划，然后执行所需工具，然后根据结果进行下一步推理。
+
+**Reflexion**
+
+引入自我反思机制，Agent在执行任务后会反思失败原因，将经验存储到记忆中，用于改进后续行动。
+
+**Tree of Thoughts (ToT)**
+
+将思考过程组织成树状结构，在每个节点探索多个可能的思考路径，可以进行回溯和剪枝，适合需要探索多种可能性的任务。
+
+**Multi-Agent系统**
+
+多个Agent协作，每个Agent负责不同角色或任务，通过通信和协调完成复杂任务。
 
 
 # Agent详解
