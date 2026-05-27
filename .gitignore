@@ -1,1 +1,6 @@
 .idea/
+.claude
+.cursor
+.obsidian
+.vscode
+feishu-summarizer

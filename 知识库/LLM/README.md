@@ -98,7 +98,7 @@ https://zhuanlan.zhihu.com/p/679177488
 
 OpenAI
 在2024年12月份的连续12天发布会：
-![img.png](img.png)
+![img.png](assets/img.png)
 
 
 ollama的教程
